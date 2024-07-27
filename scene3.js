@@ -19,16 +19,16 @@ function scene_three() {
         const parseTime = d3.timeParse("%Y-%m-%d")
         return {
             year: parseTime(d.date).getFullYear(),
-            main_office: d.run_number,
-            refugee_number: +d.time_sec
+            runNumber: d.run_number,
+            finishTime: +d.time_sec
         };
     }).then(function (data) {
 
         // data wrangling
-        const sumbyYearOffice = d3.rollups(data, v => d3.median(v, d => +d.refugee_number), d => d.year, d => d.main_office)
-        const yearKeys = Array.from(sumbyYearOffice).map(d => d[0])
-        const officeKey = Array.from(Array.from(sumbyYearOffice)[0][1]).map(d => d[0])
-        const officeKey_sorted = officeKey.sort(d3.ascending)
+        const sumbyYearRunNumber = d3.rollups(data, v => d3.median(v, d => +d.finishTime), d => d.year, d => d.runNumber)
+        const yearKeys = Array.from(sumbyYearRunNumber).map(d => d[0])
+        const runNumberKey = Array.from(Array.from(sumbyYearRunNumber)[0][1]).map(d => d[0])
+        const runNumberKey_sorted = runNumberKey.sort(d3.ascending)
 
         // X scale and Axis
         const xScale = d3.scaleBand()
@@ -43,7 +43,7 @@ function scene_three() {
         // Y scale and Axis
         const formater = d3.format(".1s")
         const yScale = d3.scaleLinear()
-            .domain([0, d3.max(data.map(d => +d.refugee_number))])
+            .domain([0, d3.max(data.map(d => +d.finishTime))])
             .range([height, 0]);
         svg
             .append('g')
@@ -52,13 +52,13 @@ function scene_three() {
 
         // set subgroup sacle
         const xSubgroups = d3.scaleBand()
-            .domain(officeKey_sorted)
+            .domain(runNumberKey_sorted)
             .range([0, xScale.bandwidth()])
             .padding([0.05])
 
         // color palette
         const color = d3.scaleOrdinal()
-            .domain(officeKey_sorted)
+            .domain(runNumberKey_sorted)
             .range(['#18375F', '#0072BC', '#8EBEFF', '#47AEB4'])
 
         // set horizontal grid line
@@ -101,7 +101,7 @@ function scene_three() {
         // create bars
         bars = svg.append("g")
             .selectAll("g")
-            .data(sumbyYearOffice)
+            .data(sumbyYearRunNumber)
             .join("g")
             .attr("transform", d => "translate(" + xScale(d[0]) + ", 0)")
             .selectAll("rect")
@@ -141,7 +141,7 @@ function scene_three() {
             .attr("x", -(margin.left) * 0.6)
             .attr("y", height + margin.bottom * 0.7)
             .attr("text-anchor", "start")
-            .text("Source: UNHCR Refugee Data Finder")
+            .text("Source: Speed Climbing Dataset")
 
         // set copyright
         svg
@@ -150,7 +150,7 @@ function scene_three() {
             .attr("x", -(margin.left) * 0.6)
             .attr("y", height + margin.bottom * 0.9)
             .attr("text-anchor", "start")
-            .text("©UNHCR, The UN Refugee Agency")
+            .text("©Masaryk University")
 
         //set legend
         svg

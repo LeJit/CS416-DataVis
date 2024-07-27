@@ -20,15 +20,15 @@ function scene_two() {
         const parseTime = d3.timeParse("%Y-%m-%d")
         return {
             year: parseTime(d.date).getFullYear(),
-            popType: d.side,
-            popNumber: +d.time_sec
+            climbSide: d.side,
+            finishTime: +d.time_sec
         };
     }).then(function (data) {
 
         //pivot the data
         data = mean_by_year(data)
         console.log(data)
-        const dataGrouped = d3.group(data, d => d.popType)
+        const dataGrouped = d3.group(data, d => d.climbSide)
 
         // list of value keys
         const typeKeys = ["l", "r"];
@@ -57,7 +57,7 @@ function scene_two() {
         // Y scale and Axis
         const formatter = d3.format("~s")
         const yScale = d3.scaleLinear()
-            .domain([6, d3.max(data, d => d.popNumber)])
+            .domain([6, d3.max(data, d => d.finishTime)])
             .range([height, 0]);
         svg
             .append('g')
@@ -91,7 +91,7 @@ function scene_two() {
                 return d3.line()
                     .curve(d3.curveCardinal)
                     .x(d => xScale(d.year))
-                    .y(d => yScale(d.popNumber))
+                    .y(d => yScale(d.finishTime))
                     (d[1])
             });
 
