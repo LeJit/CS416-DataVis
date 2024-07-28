@@ -131,24 +131,6 @@ function scene_two(sideType) {
             .attr("text-anchor", "start")
             .text("Average Time (seconds)")
 
-        // set source
-        svg
-            .append("text")
-            .attr("class", "chart-source")
-            .attr("x", -(margin.left) * 0.7)
-            .attr("y", height + margin.bottom * 0.7)
-            .attr("text-anchor", "start")
-            .text("Source: Speed Climbing Dataset")
-
-        // set copyright
-        svg
-            .append("text")
-            .attr("class", "copyright")
-            .attr("x", -(margin.left) * 0.7)
-            .attr("y", height + margin.bottom * 0.9)
-            .attr("text-anchor", "start")
-            .text("©Masaryk University")
-
         // set legend manually
         if (sideType == "by-side") {
             svg

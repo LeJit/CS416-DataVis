@@ -153,28 +153,12 @@ function scene_one(nBins) {
                 .attr("text-anchor", "start")
                 .text("Finish time of top speed climbers")
 
-            // set source
-            svg
-                .append("text")
-                .attr("class", "chart-source")
-                .attr("x", -(margin.left) * 0.4)
-                .attr("y", height + margin.bottom * 0.7)
-                .attr("text-anchor", "start")
-                .text("Source: Speed Climbing Dataset")
-                .on("click", function () { window.open("https://mocap.fi.muni.cz/speed21-dataset"); })
-
-            // set copyright
-            svg
-                .append("text")
-                .attr("class", "copyright")
-                .attr("x", -(margin.left) * 0.4)
-                .attr("y", height + margin.bottom * 0.9)
-                .attr("text-anchor", "start")
-                .text("©Masaryk University")
-
             const annotations = [
                 {
-                    note: { label: "Last Qualifier Time for 2024 Olympics" },
+                    note: {
+                        label: "To qualify for 2024 Olympics, climbers must have climbed in under 7 seconds",
+                        title: "2024 Olympics Qualifer"
+                    },
                     x: xScale(6.93),
                     y: yScale(3),
                     dy: -10,

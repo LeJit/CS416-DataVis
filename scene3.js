@@ -135,24 +135,6 @@ function scene_three() {
             .attr("text-anchor", "start")
             .text("Median finish time (seconds)")
 
-        // set source
-        svg
-            .append("text")
-            .attr("class", "chart-source")
-            .attr("x", -(margin.left) * 0.6)
-            .attr("y", height + margin.bottom * 0.7)
-            .attr("text-anchor", "start")
-            .text("Source: Speed Climbing Dataset")
-
-        // set copyright
-        svg
-            .append("text")
-            .attr("class", "copyright")
-            .attr("x", -(margin.left) * 0.6)
-            .attr("y", height + margin.bottom * 0.9)
-            .attr("text-anchor", "start")
-            .text("©Masaryk University")
-
         //set legend
         svg
             .append("rect")
