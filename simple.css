@@ -9,11 +9,10 @@ text {
     fill: #333333;
 }
 
-input {
-    position: sticky;
-    top: 50px;
-    left: 50px;
-
+input,
+select {
+    position: relative;
+    left: 20px;
 }
 
 .grid path {

@@ -98,6 +98,7 @@ function scene_three() {
                 .style("opacity", 1)
         }
 
+
         // create bars
         bars = svg.append("g")
             .selectAll("g")
@@ -206,5 +207,30 @@ function scene_three() {
             .attr("x", -(margin.left) * 0.6 + 300)
             .attr("y", -(margin.top / 2.5))
             .text("Fourth Run")
+
+        const annotations = [
+            {
+                note: {
+                    label: "Decrease in median time between runs 3 and 4 due to new rules",
+                    title: "Olympic Speed Climbing Rules implmented"
+                },
+                type: d3.annotationCalloutCircle,
+                subject: {
+                    radius: 25,         // circle radius
+                    radiusPadding: 5   // white space around circle befor connector
+                },
+                color: ["red"],
+                x: 345,
+                y: yScale(5.75),
+                dy: -20,
+                dx: -10,
+            },
+        ];
+
+        const testAnnotation = d3.annotation().annotations(annotations);
+
+        svg
+            .append("g")
+            .call(testAnnotation)
     })
 }

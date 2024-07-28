@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="simple.css">
     <!-- Load D3.js-->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <script src="helper.js"></script>
     <script src="scene1.js"></script>
     <script src="scene2.js"></script>
@@ -34,6 +34,9 @@
 
     <!-- Create a button to trigger the transition -->
     <h4>Scene Selection</h4>
+    <p>
+        Use the below buttons to navigate between different scenes.
+    </p>
     <form id="form" class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-secondary active" id="scene1">
             <input type="radio" name="controlHeatmapType" onclick="testClick(this);" value="MRR" checked>Scene 1<br>
@@ -57,12 +60,13 @@
             if (chosen_scene == "scene1") {
                 scene_one(75)
             } else if (chosen_scene == "scene2") {
-                scene_two()
+                scene_two("by-side")
             } else if (chosen_scene == "scene3") {
                 scene_three()
             }
 
         })
+        scene_one(75)
     </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

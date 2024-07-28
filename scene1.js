@@ -4,6 +4,23 @@ function scene_one(nBins) {
     const width = 450 - margin.left - margin.right;
     const height = 350 - margin.top - margin.bottom;
 
+    d3.select("#viz_container")
+        .append("h4")
+        .text("Number of Bins:")
+
+    d3.select("#viz_container")
+        .append("p")
+        .text("Choose the number of histogram bins to use")
+
+    var inputForm = d3.select("#viz_container")
+        .append("input")
+        .attr("type", "number")
+        .attr("min", 50)
+        .attr("max", 80)
+        .attr("id", "input_box")
+        .attr("value", nBins)
+        .attr("step", 5)
+
     // append the svg object to the body of the page
     const svg = d3.select("#viz_container")
         .append("svg")
@@ -30,15 +47,6 @@ function scene_one(nBins) {
 
 
             // Append Input form for Number of Bins
-
-            var input = d3.select("#viz_container")
-                .append("input")
-                .attr("type", "number")
-                .attr("min", 50)
-                .attr("max", 80)
-                .attr("id", "input_box")
-                .attr("value", 75)
-                .attr("step", 5)
 
             // Y scale and Axis
             const yScale = d3.scaleLinear()
@@ -88,13 +96,14 @@ function scene_one(nBins) {
             const histogram = d3.bin()
                 .value(d => +d.time_sec)
                 .domain(xScale.domain())
-                .thresholds(xScale.ticks(75));
+                .thresholds(xScale.ticks(nBins));
 
             // prepare data for bars
             const bins = histogram(data)
 
             // Scale the range of the data in the y domain
-            yScale.domain([0, 30]);
+            maxYScale = d3.max(bins, function (d) { return d.length }) + 1;
+            yScale.domain([0, maxYScale]);
 
             // add the y Axis
             yAxis
@@ -163,9 +172,31 @@ function scene_one(nBins) {
                 .attr("text-anchor", "start")
                 .text("©Masaryk University")
 
+            const annotations = [
+                {
+                    note: { label: "Last Qualifier Time for 2024 Olympics" },
+                    x: xScale(6.93),
+                    y: yScale(3),
+                    dy: -10,
+                    dx: 16,
+                    type: d3.annotationCalloutElbow,
+                    connector: { end: "arrow" },
+                },
+            ];
+
+            const testAnnotation = d3.annotation().annotations(annotations);
+
+            svg
+                .append("g")
+                .call(testAnnotation)
+
+            // Input Form
+
+            inputForm.on("change", function (d) {
+                var selection = +d3.select(this).property("value")
+                d3.selectAll('#viz_container').selectAll("*").remove();
+                scene_one(selection)
+            })
+
         })
-}
-
-function update_bins(numBins) {
-
 }

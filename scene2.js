@@ -1,8 +1,35 @@
-function scene_two() {
+function scene_two(sideType) {
     // set the dimensions and margins of the graph
     const margin = { top: 80, right: 20, bottom: 50, left: 40 };
     const width = 450 - margin.left - margin.right;
     const height = 350 - margin.top - margin.bottom;
+
+    var typeKeys = ["by-side", "both-side"];
+
+    if (sideType === "both-side") {
+        typeKeys = ["both-side", "by-side"];
+    }
+
+    // Add dropdown button
+    d3.select("#viz_container")
+        .append("h4")
+        .text("By-side or both sides together:")
+
+    d3.select("#viz_container")
+        .append("p")
+        .text("Since climbers race side-by-side, some people have raised 'concerns' about whether one side gives an advantage")
+
+    var dropdownButton = d3.select("#viz_container")
+        .append("select")
+        .attr("class", "form-select")
+
+    dropdownButton
+        .selectAll("options")
+        .data(typeKeys)
+        .enter()
+        .append('option')
+        .text(function (d) { return d; })
+        .attr("value", function (d) { return d; })
 
     // append the svg object to the body of the page
     const svg = d3.select("#viz_container")
@@ -26,24 +53,15 @@ function scene_two() {
     }).then(function (data) {
 
         //pivot the data
-        data = mean_by_year(data)
-        console.log(data)
-        const dataGrouped = d3.group(data, d => d.climbSide)
+        data = mean_by_year(data, sideType)
+        var dataGrouped = d3.group(data, d => d.climbSide)
 
         // list of value keys
-        const typeKeys = ["l", "r"];
+        if (sideType === "both-side") {
+            typeKeys = ["both-side", "by-side"];
+            dataGrouped = d3.group(data, d => "all")
+        }
 
-        // Add dropdown button
-        var dropdownButton = d3.select("#viz_container")
-            .append("select")
-
-        dropdownButton
-            .selectAll("options")
-            .data(typeKeys)
-            .enter()
-            .append('option')
-            .text(function (d) { return d; })
-            .attr("value", function (d) { return d; })
 
         // X scale and Axis
         const xScale = d3.scaleTime()
@@ -132,32 +150,53 @@ function scene_two() {
             .text("©Masaryk University")
 
         // set legend manually
-        svg
-            .append("circle")
-            .attr("cx", -(margin.left) * 0.6)
-            .attr("cy", -(margin.top / 2.5))
-            .attr("r", 5)
-            .style("fill", "#0072BC");
-        svg
-            .append("text")
-            .attr("class", "legend")
-            .attr("x", -(margin.left) * 0.6 + 10)
-            .attr("y", -(margin.top / 2.5))
-            .attr("alignment-baseline", "middle")
-            .text("Left Side")
-        svg
-            .append("circle")
-            .attr("cx", 60)
-            .attr("cy", -(margin.top / 2.5))
-            .attr("r", 5)
-            .style("fill", "#00B398")
-        svg
-            .append("text")
-            .attr("class", "legend")
-            .attr("x", 70)
-            .attr("y", -(margin.top / 2.5))
-            .attr("alignment-baseline", "middle")
-            .text("Right Side")
+        if (sideType == "by-side") {
+            svg
+                .append("circle")
+                .attr("cx", -(margin.left) * 0.6)
+                .attr("cy", -(margin.top / 2.5))
+                .attr("r", 5)
+                .style("fill", "#0072BC");
+            svg
+                .append("text")
+                .attr("class", "legend")
+                .attr("x", -(margin.left) * 0.6 + 10)
+                .attr("y", -(margin.top / 2.5))
+                .attr("alignment-baseline", "middle")
+                .text("Left Side")
+            svg
+                .append("circle")
+                .attr("cx", 60)
+                .attr("cy", -(margin.top / 2.5))
+                .attr("r", 5)
+                .style("fill", "#00B398")
+            svg
+                .append("text")
+                .attr("class", "legend")
+                .attr("x", 70)
+                .attr("y", -(margin.top / 2.5))
+                .attr("alignment-baseline", "middle")
+                .text("Right Side")
+        } else {
+            svg
+                .append("circle")
+                .attr("cx", -(margin.left) * 0.6)
+                .attr("cy", -(margin.top / 2.5))
+                .attr("r", 5)
+                .style("fill", "#0072BC");
+            svg
+                .append("text")
+                .attr("class", "legend")
+                .attr("x", -(margin.left) * 0.6 + 10)
+                .attr("y", -(margin.top / 2.5))
+                .attr("alignment-baseline", "middle")
+                .text("Both Sides")
+        }
 
+        dropdownButton.on("change", function (d) {
+            var selection = d3.select(this).property("value")
+            d3.selectAll('#viz_container').selectAll("*").remove();
+            scene_two(selection)
+        })
     })
 }
