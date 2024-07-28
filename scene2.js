@@ -159,6 +159,32 @@ function scene_two(sideType) {
                 .attr("y", -(margin.top / 2.5))
                 .attr("alignment-baseline", "middle")
                 .text("Right Side")
+
+            const annotations = [
+                {
+                    note: {
+                        label: "Some atheletes argued one side of the track gave an advatange",
+                        title: "Controversy about side of track"
+                    },
+                    type: d3.annotationCalloutCircle,
+                    subject: {
+                        radius: 15,         // circle radius
+                        radiusPadding: 5   // white space around circle befor connector
+                    },
+                    color: ["red"],
+                    x: 10,
+                    y: yScale(6.30),
+                    dy: -50,
+                    dx: 100,
+                },
+            ];
+
+            const testAnnotation = d3.annotation().annotations(annotations);
+
+            svg
+                .append("g")
+                .call(testAnnotation)
+
         } else {
             svg
                 .append("circle")
