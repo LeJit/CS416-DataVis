@@ -17,7 +17,7 @@ function scene_two(sideType) {
 
     d3.select("#viz_container")
         .append("p")
-        .text("Since climbers race side-by-side, some people have raised 'concerns' about whether one side gives an advantage")
+        .text("Since climbers race side-by-side, some people have raised 'concerns' about whether one side gives an advantage. After inclusion into the Olympics, the International Federation of Sports Climbing has taken steps to mitigate differences by side.")
 
     var dropdownButton = d3.select("#viz_container")
         .append("select")
